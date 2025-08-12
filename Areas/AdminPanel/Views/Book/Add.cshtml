@@ -1,0 +1,69 @@
+﻿@using BookWebApp.Models.ViewModels.BookVM
+@model BookAddForm_VM
+
+<h1 style="padding-top:96px;">Kitap Ekle</h1>
+
+<h3>BookAdd_VM içeriği gönderilecek </h3>
+
+
+@* Kitap resmi seçtiğinde ekranda yüklenen foto olsun *@
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Book.Title" class="control-label"></label>
+                <input asp-for="Book.Title" class="form-control" />
+                <span asp-validation-for="Book.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.Price" class="control-label"></label>
+                <input asp-for="Book.Price" class="form-control" />
+                <span asp-validation-for="Book.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.CoverImage" class="control-label"></label>
+                <input asp-for="Book.CoverImage" class="form-control" />
+                <span asp-validation-for="Book.CoverImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.AuthorID" class="control-label"></label>
+                <select asp-for="Book.AuthorID" asp-items="@Model.Author" class="form-control" ></select>
+                <span asp-validation-for="Book.AuthorID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.CategoryID" class="control-label"></label>
+                <select asp-for="Book.CategoryID" asp-items="@Model.Category" class="form-control"></select>
+                <span asp-validation-for="Book.CategoryID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.BookPublishers" class="control-label"></label>
+                <select asp-for="Book.SelectedPublishers" asp-items="Model.Publisher" class="form-control" multiple></select>
+                <span asp-validation-for="Book.BookPublishers" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Book.Description" class="control-label"></label>
+                <textarea asp-for="Book.Description" class="control-label" cols="50" rows="5"></textarea>
+                <span asp-validation-for="Book.Description" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

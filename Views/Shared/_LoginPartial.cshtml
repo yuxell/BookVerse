@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
+@{
+	var user = await UserManager.GetUserAsync(User);
+	// <label>Merhaba @user.UserName</label>
+}
+	@if (user != null)
+	{
+		// Uye var fakat rolu nedir
+		@if (await UserManager.IsInRoleAsync(user, "Admin"))
+		{
+			<button onclick="window.location.href='/AdminPanel/book/'" class="btn-primary" >Management</button>
+			@* <a asp-area="AdminPanel" asp-controller="Book" asp-action="Index" class="btn-primary">Admin Paneli</a> *@
+		}
+		else
+		{
+			<button onclick="window.location.href='/hesabim/'" class="btn-primary">Hesabım</button>
+			@* <a asp-area="Hesabim" asp-controller="Home" asp-action="Index" class="btn-primary">Uye Paneli</a> *@
+		}
+		<button onclick="window.location.href='/login/logout/'" class="btn-primary" >Logout</button>
+		@* <a asp-area="" asp-controller="Login" asp-action="Logout" class="btn-primary">Logout</a> *@
+	}
+	else
+	{
+		<button onclick="openModal()" class="btn-primary" id="loginBtn">Login</button>
+		<button onclick="window.location.href='/login/register/'" class="btn-primary" id="logoutBtn">Sign Up</button>
+		@* <a asp-area="" asp-controller="Login" asp-action="Login" class="btn-primary">Login</a> *@
+		@* <a asp-area="" asp-controller="Login" asp-action="UyeEkle" class="btn-primary">Üye Ekle</a> *@
+	}
+

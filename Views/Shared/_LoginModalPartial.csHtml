@@ -1,0 +1,80 @@
+﻿@model BookWebApp.Models.ViewModels.Login.Login_VM
+
+
+
+@* 
+
+<div class="modal" id="loginModal">
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<h4>Please enter your informations</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login" asp-controller="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+</div> *@
+
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Welcome Back</h2>
+            <button class="close-button" id="closeModal">&times;</button>
+        </div>
+        <form class="login-form" id="loginForm" method="post" action="/login/login/">
+            <div class="form-group">
+                <label asp-for="Username">Email</label>
+                <input asp-for="Username" type="text" required placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" id="password" required placeholder="Enter your password">
+            </div>
+            <div class="form-options">
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+            <input type="submit" class="btn-primary" value="login" />
+            
+
+            <div class="signup-link">
+                Don't have an account? <a href="/login/register">Sign up</a>
+            </div>
+        </form>
+    </div>
+</div>

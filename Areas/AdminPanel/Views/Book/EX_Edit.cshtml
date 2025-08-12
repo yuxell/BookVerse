@@ -1,0 +1,56 @@
+﻿@using BookWebApp.Models.ViewModels.BookVM
+@model BookEditForm_VM
+
+<h2>Kitap Düzenlee</h2>
+
+
+
+<form asp-controller="Book" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Book.BookID" />
+
+
+    <div>
+        <label>Kitap Adı</label>
+        <input asp-for="Book.Title" class="form-control" />
+        <span asp-validation-for="Book.Title" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Fiyat</label>
+        <input asp-for="Book.Price" type="number" step="0.01" class="form-control" />
+    </div>
+
+    <div>
+        <label>Açıklama</label>
+        <textarea asp-for="Book.Description" class="form-control"></textarea>
+    </div>
+
+    <div>
+        <label>CoverImage</label>
+        <input asp-for="Book.CoverImage" class="form-control"></input>
+        <span asp-validation-for="Book.CoverImage" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Yazar</label>
+        <select asp-for="Book.AuthorID" asp-items="Model.Author" class="form-control">
+            <option value="">Seçiniz</option>
+        </select>
+    </div>
+    
+    <div>
+        <label>Kategori</label>
+        <select asp-for="Book.CategoryID" asp-items="Model.Category" class="form-control">
+            <option value="">Seçiniz</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Yayınevleri</label>
+        <select asp-for="Book.SelectedPublishers" asp-items="Model.Publisher" name="SelectedPublisherIds" class="form-control" multiple></select>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>

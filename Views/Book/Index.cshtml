@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Kitap Listesi";
+}
+
+<h2 style="padding-top:96px;">Kitaplar</h2>
+<div id="book-list">
+    <!-- Kitaplar buraya yüklenecek -->
+</div>
+
+<button id="load-more" onclick="loadMoreBooks()">Daha Fazla</button>
+
+<script src="~/js/booklistpager.js"></script>
+
+<script>
+    let currentPage = 1;
+    const pageSize = 10;
+    let bookDetailUrl = "@Url.Action("BookDetail", "Book")"; // URL'yi Razor ile oluştur
+
+        async function loadMoreBooks() {
+        const response = await fetch(`/Book/LoadMoreBooks?page=${currentPage}&pageSize=${pageSize}`);
+        const books = await response.json();
+
+        if (books.length === 0) {
+            document.getElementById("load-more").innerText = "Tüm kitaplar yüklendi";
+            document.getElementById("load-more").disabled = true;
+            return;
+        }
+
+        const bookList = document.getElementById("book-list");
+
+        // Kitap detay URL'sini oluştur
+        let detailBaseUrl = "@Url.Action("BookDetail", "Book")";
+
+        books.forEach(book => {
+            const bookCard = document.createElement("div");
+            let detailUrl = "@Url.Action("BookDetail", "Book")/" + book.BookID;
+            bookCard.classList.add("book-card");
+            bookCard.innerHTML = `
+                        <img src="/img/books/${book.CoverImage}" alt="${book.Title}" class="book-cover">
+                        <h3><a href="${detailUrl}" asp-route-id="${book.BookID}">${book.Title}</a></h3>
+                        <p>${book.AuthorFullName}</p>
+                        <p>${book.Price} TL</p>
+                    `;
+
+            bookList.appendChild(bookCard);
+
+            // Fade-in efekti
+            setTimeout(() => {
+                bookCard.style.opacity = "1";
+                bookCard.style.transform = "translateY(0)";
+                bookCard.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+            }, 200);
+        });
+
+        currentPage++;
+    }
+    loadMoreBooks();
+</script>
+
+
+
+
+<style>
+    #book-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .book-card {
+        width: 200px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.5s ease-in;
+        transform: translateY(60px);
+
+    }
+
+    .book-cover {
+        /* width: 100px; */
+        height: 150px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    #load-more {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>

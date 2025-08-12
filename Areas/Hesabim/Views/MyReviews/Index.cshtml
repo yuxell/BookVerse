@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BookWebApp.Models.ViewModels.MyReviewsVM.MyReviews_VM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

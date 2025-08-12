@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookWebApp</title>
+    <link rel="stylesheet" href="~/css/style.css" />
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="library-icon"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg>
+                    <span>BookVerse</span>
+                </div>
+                <nav class="nav-desktop">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/Book/" class="nav-link">Books</a>
+                    <a href="#" class="nav-link">Categories</a>
+                    <a href="#" class="nav-link">About</a>
+                </nav>
+                <div class="header-actions">
+                    <partial name="_LoginPartial"></partial>
+                </div>
+            </div>
+        </div>
+
+    </header>
+    
+    <main role="main">
+        @RenderBody()
+    </main>
+    
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="library-icon"><path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path></svg>
+                        <span>BookVerse</span>
+                    </div>
+                    <p class="footer-description">Your gateway to endless stories and knowledge. Join our community of book lovers today.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <nav class="footer-nav">
+                        <a href="#">Home</a>
+                        <a href="#">Books</a>
+                        <a href="#">Categories</a>
+                        <a href="#">About Us</a>
+                    </nav>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <nav class="footer-nav">
+                        <a href="#">Fiction</a>
+                        <a href="#">Non-Fiction</a>
+                        <a href="#">Science Fiction</a>
+                        <a href="#">Mystery</a>
+                    </nav>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <nav class="footer-nav">
+                        <a href="mailto:contact@bookverse.com">contact@bookverse.com</a>
+                        <a href="tel:+1234567890">+1 (234) 567-890</a>
+                        <a href="#">Support</a>
+                        <a href="#">FAQ</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BookVerse. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    @* <partial name="_LoginModalPartial"></partial> *@
+    <partial name="_LoginModalPartial" model="new BookWebApp.Models.ViewModels.Login.Login_VM()"></partial>
+
+
+    <!-- Login Modal -->
+    @* <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <button class="close-button" id="closeModal">&times;</button>
+            </div>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label asp-for="email">Email</label>
+                    <input type="text" id="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+                <div class="signup-link">
+                    Don't have an account? <a href="#">Sign up</a>
+                </div>
+            </form>
+        </div>
+    </div> *@
+    
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script> *@
+    <script src="~/js/script.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

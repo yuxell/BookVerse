@@ -1,0 +1,66 @@
+﻿@model IEnumerable<BookWebApp.Models.ViewModels.BookCard_VM>
+
+@{
+    ViewData["Title"] = "Admin Book Controller";
+}
+
+<h1 style="padding-top:96px;">Admin Panel</h1>
+
+<p>
+    <a asp-action="Add" asp-controller="book">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoverImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorFullName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CoverImage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorFullName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.BookID}) |
+                    @Html.ActionLink("Detail", "BookDetail", new { id = item.BookID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.BookID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

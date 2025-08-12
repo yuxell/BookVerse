@@ -1,0 +1,270 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model BookWebApp.Models.ViewModels.BookDetail_VM
+@inject UserManager<AppUser> UserManager
+@{
+    ViewData["Title"] = Model.Title;
+}
+<link href="~/css/book.css" rel="stylesheet" />
+<link href="~/css/bookdetail.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.4.85/css/materialdesignicons.min.css">
+
+
+<section class="container">
+    <main class="book-detail">
+        <div class="book-header">
+            <img src="/img/books/@Model.CoverImage" alt="@Model.Title" class="book-cover">
+
+            <div class="book-info">
+                <h1 class="book-title">@Model.Title</h1>
+                <div class="book-meta">
+                    <span><a href="/author/@Model.AuthorID">by @Model.AuthorFullName</a></span>
+                    <div class="book-rating">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span id="avgRating">@Model.AverageRating.ToString("0.0")</span>
+                    </div>
+                    <span><a href="/category/@Model.CategoryID">@Model.Category</a></span>
+                    <span>
+                        <div class="book-actions">
+                            <label class="favorite-checkbox">
+                                <input type="checkbox" id="favoriteCheckbox">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </label>
+                        </div>
+                    </span>
+                </div>
+
+                <p class="book-description">@Model.Description</p>
+
+                <h3>Yayınevleri</h3>
+                @if (Model?.BookPublishers != null && Model.BookPublishers.Any())
+                {
+                    @foreach (var publisher in Model.BookPublishers)
+                    {
+                        <p>@publisher.Publisher.PublisherName</p>
+                    }
+                }
+                else
+                {
+                    <p>Henüz bir yayınevi eklenmemiş.</p>
+                }
+            </div>
+        </div>
+
+        <div class="book-details">
+            <div class="details-section">
+                <h2 class="section-title">Reviews</h2>
+                @* Review ekleme bölümü *@
+                <div class="add-review">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <h3 class="section-title">@UserManager.GetUserName(User) Add Your Review</h3>
+                        <div class="form-group">
+                            <div class="rating-css hover-effect">
+                                <input type="radio" value="1" id="rating3-1" name="rating" checked>
+                                <label for="rating3-1" class="mdi mdi-star"></label>
+                                <input type="radio" value="2" id="rating3-2" name="rating">
+                                <label for="rating3-2" class="mdi mdi-star"></label>
+                                <input type="radio" value="3" id="rating3-3" name="rating">
+                                <label for="rating3-3" class="mdi mdi-star"></label>
+                                <input type="radio" value="4" id="rating3-4" name="rating">
+                                <label for="rating3-4" class="mdi mdi-star"></label>
+                                <input type="radio" value="5" id="rating3-5" name="rating">
+                                <label for="rating3-5" class="mdi mdi-star"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="review">Your Review</label>
+                            <textarea id="reviewText" placeholder="Share your thoughts about the book..." required></textarea>
+                        </div>
+                        <button type="submit" id="addCommentBtn" class="btn btn-primary">Submit Review</button>
+                    }
+                </div>
+                <div class="reviews" id="commentList">
+                    
+                    @if (Model?.Reviews != null && Model.Reviews.Any())
+                    {
+                        <div id="deleteMessage" style="display: none; color: green; font-weight: bold;"></div>
+                        @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+                        {
+                            <div class="review" id="comment-@review.ReviewID">
+                                <div class="review-avatar">
+                                    <img src="/img/user/avatar.png" alt="@review.User">
+                                </div>
+                                <div class="review-content">
+                                    <div class="review-header">
+                                        <span class="reviewer">@review.User</span>
+                                        <div class="book-rating">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            <span>@review.Rating</span>
+                                        </div>
+                                    </div>
+                                    <p class="review-text">@review.Comment</p>
+                                    <span class="review-date">@review.CreatedAt</span>
+                                    <span>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            @if (int.Parse(UserManager.GetUserId(User)) == review.UserID)
+                                            {
+                                                <button class="btn-secondary" data-id="@review.ReviewID" onclick="deleteReview(@review.ReviewID)">Yorumu Sil</button>
+                                            }
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>Henüz bir yorum eklenmemiş.</p>
+                    }
+
+                    
+                </div>
+            </div>
+
+            @* Sağ sütun detay bölümü *@
+            <div class="details-section">
+                <h2 class="section-title">Book Stats</h2>
+                <div class="book-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">304</div>
+                        <div class="stat-label">Pages</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">8.5K</div>
+                        <div class="stat-label">Readers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">@Model.AverageRating.ToString("0.0")</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</section>
+
+
+@* Yorum ekleme bölümü *@
+<script>
+    document.getElementById("addCommentBtn").addEventListener("click", async function () {
+    let reviewText = document.getElementById("reviewText").value;
+    let rating = document.querySelector("input[name='rating']:checked")?.value;
+    let bookId = @Model.BookID;
+
+    if (!reviewText || !rating) {
+        alert("Yorum veya puan boş olamaz!");
+        return;
+    }
+
+    let data = {
+        bookId: bookId,
+        reviewText: reviewText,
+        rating: parseInt(rating)
+    };
+
+    let response = await fetch("/Book/AddReview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    let result = await response.json();
+    let newReviewId = result.newReviewID;
+
+
+    if (result.success) {
+    document.getElementById("avgRating").textContent = result.newAverageRating;
+    addNewComment(reviewText,rating,newReviewId);
+
+    //Formu Temizler
+    document.getElementById("reviewText").value = "";
+    document.querySelector("input[name='rating']:checked").checked = false;
+
+    } else {
+    alert("Bir hata oluştu!");
+    }
+    });
+    // Yeni yorumu sayfa yenilemeden yorumların üstüne ekler
+    function addNewComment(reviewText, rating, newReviewId ) {
+        let commentList = document.getElementById("commentList"); // Yorumların olduğu div
+        let newComment = document.createElement("div");
+        newComment.classList.add("review", "fade-in");
+
+        newComment.innerHTML = `
+        <div class="comment review visible" id="comment-${newReviewId}">
+            <div class="review-avatar">
+                <img src="/img/user/avatar.png" alt="@UserManager.GetUserName(User)">
+            </div>
+            <div class="review-content">
+                <div class="review-header">
+                    <span class="reviewer">@UserManager.GetUserName(User)</span>
+                    <div class="book-rating">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span>${rating}</span>
+                    </div>
+                </div>
+                <p class="review-text">${reviewText}</p>
+                <span class="review-date">${new Date().toLocaleString()}</span>
+                <span>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="btn-secondary" data-id="${newReviewId}" onclick="deleteReview(${newReviewId})">Yorumu Sil</button>
+                }
+                </span>
+            </div>
+        </div>
+        `;
+
+        commentList.prepend(newComment); // Yeni yorumu en üste ekler
+
+        // Fade-in efekti için CSS sınıfı ekleyelim
+        setTimeout(() => {
+            newComment.classList.add("visible");
+        }, 10);
+    }
+</script>
+
+
+@* Yorum Silme Bölümü *@
+<script>
+    async function deleteReview(reviewId) {
+        let commentDiv = document.getElementById("comment-" + reviewId);
+
+        try {
+            let response = await fetch(`/Book/DeleteReview?id=${reviewId}`, {
+                method: "POST"
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP hata kodu: ${response.status}`);
+            }
+
+            let result = await response.json();
+
+
+            if (result.success) {
+                // Yorumu fadeOut ile kaldır
+                commentDiv.style.transition = "opacity 0.5s";
+                commentDiv.style.opacity = "0";
+                setTimeout(() => {
+                    commentDiv.remove();
+                    // 'Yorum silindi' mesajını fadeIn ile göster
+                    let messageDiv = document.getElementById("deleteMessage");
+                    messageDiv.textContent = "Yorum silindi!";
+                    messageDiv.style.display = "block";
+                    messageDiv.style.opacity = "0";
+                    setTimeout(() => messageDiv.style.opacity = "1", 100);
+                    setTimeout(() => messageDiv.style.opacity = "0", 2000);
+                }, 500);
+            } else {
+                alert("Yorum silinemedi. Hata: " + result.message);
+            }
+        } catch (error) {
+            console.error("Hata:", error);
+            alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+        }
+    };
+</script>

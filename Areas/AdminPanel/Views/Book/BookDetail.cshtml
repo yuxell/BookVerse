@@ -1,0 +1,112 @@
+﻿@model BookWebApp.Models.ViewModels.BookDetail_VM
+
+@{
+    ViewData["Title"] = "BookDetail";
+}
+
+<h1 style="padding-top:96px;">BookDetail</h1>
+
+<div>
+    <h4>BookDetail_VM</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BookID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BookID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CoverImage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CoverImage)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AuthorID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AuthorID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AuthorFullName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AuthorFullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AverageRating)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AverageRating)
+        </dd>
+    </dl>
+</div>
+
+<h3>Yayınevleri</h3>
+<ul>
+    @if (Model?.BookPublishers != null && Model.BookPublishers.Any())
+    {
+        @foreach (var publisher in Model.BookPublishers)
+        {
+            <li>@publisher.Publisher.PublisherName</li>
+        }
+    }
+    else
+    {
+        <li>Henüz bir yayınevi eklenmemiş.</li>
+    }
+</ul>
+
+<h3>Yorumlar</h3>
+<ul>
+    @if (Model?.Reviews != null && Model.Reviews.Any())
+    {
+        @foreach (var review in Model.Reviews)
+        {
+            <li>@review.Rating</li>
+            <li>@review.User.Name</li>
+            <li>@review.Comment</li>
+            <li>@review.CreatedAt</li>
+            <li>
+                <a asp-action="DeleteReview" asp-area="AdminPanel" asp-controller="Book" asp-route-id="@review.ReviewID">Yorumu Sil(Fetch Api olacak)</a>
+            </li>
+        }
+
+    }
+    else
+    {
+        <li>Henüz bir yorum eklenmemiş.</li>
+    }
+</ul>
+
+
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.BookID }) |
+    <a asp-action="Index">Back to List</a>
+</div>
